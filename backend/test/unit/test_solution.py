@@ -22,14 +22,28 @@ def sut():
 
 # add your test case implementation here
 @pytest.mark.unit
+def test_dao_exception():
+    """
+    Test that the function catches exception when get_all recieves exception
+    """
+    mockedDAO = mock.MagicMock()
+    mockedDAO.find.side_effect = Exception('Database not found')
+    mockedsut = RecipeController(mockedDAO)
+    try:
+        mockedsut.get_available_items()
+    except Exception:
+        assert False
+
+@pytest.mark.unit
 def test_get_all(sut):
     """
-    Test that get_all doesnt raise an exception
+    Test get_all function when DAO returns dictionary
     """
     try:
         sut.get_available_items()
     except Exception:
         assert False
+
 
 @pytest.mark.unit
 def test_minimum_quantity_0(sut):
